@@ -11,7 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +28,16 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     FloatingActionButton addButton;
+    String addText = "";
+    EditText input;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menus, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +55,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void setAddButton(View view){
         Toast.makeText(this, "Button Selected", Toast.LENGTH_SHORT).show();
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.btn_plus)
-                .setTitle("Add new item")
-                .setMessage("enter item below")
-                .setPositiveButton("Add to To Do", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(MainActivity.this, "add to do selected", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addText = input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter{
