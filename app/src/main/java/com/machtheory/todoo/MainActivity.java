@@ -12,13 +12,16 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 /* This Program is a Kanban Style To Do List to keep users' organized*/
@@ -26,11 +29,13 @@ import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
+    TabItem toDo;
+    TabItem inProgress;
+    TabItem done;
     ViewPager viewPager;
-    FloatingActionButton addButton;
-    String addText = "";
-    EditText input;
 
+
+// Options Menu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,75 +45,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.clear_text){
+            Log.d("menu", "item selected");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
-        viewPager = (ViewPager)findViewById(R.id.viewPager);
-        addButton = (FloatingActionButton)findViewById(R.id.addButton);
+        tabLayout = findViewById(R.id.tabLayout);
+        toDo = findViewById(R.id.toDo);
+        inProgress = findViewById(R.id.inProgress);
+        done = findViewById(R.id.done);
+        viewPager = findViewById(R.id.viewPager);
 
-        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        PagerAdapter pagerAdapter = new PagerAdapter(
+                getSupportFragmentManager(),
+                tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-    }
-
-    public void setAddButton(View view){
-        Toast.makeText(this, "Button Selected", Toast.LENGTH_SHORT).show();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                addText = input.getText().toString();
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter{
-
-        String data[] = {"To Do", "In Progress", "Done!"};
-
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            if(position == 0){
-                return new ToDo();
-            }
-            if(position == 1){
-                return  new InProgress();
-            }
-            if(position == 2){
-                return new Done();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return data.length;
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return data[position];
-        }
-    }
 }

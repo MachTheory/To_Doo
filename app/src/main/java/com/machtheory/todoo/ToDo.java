@@ -1,19 +1,25 @@
 package com.machtheory.todoo;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -21,18 +27,21 @@ import java.util.ArrayList;
 public class ToDo extends Fragment {
 
     ListView toDoList;
+    FloatingActionButton addButton;
+    String addText = "";
+    EditText input;
+    ArrayList<String> toDos;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_to_do, container, false);
+        View viewInflater = inflater.inflate(R.layout.fragment_to_do, container, false);
 
-        toDoList = view.findViewById(R.id.toDoList);
-        final ArrayList<String> toDos = new ArrayList<>();
+        toDoList = viewInflater.findViewById(R.id.toDoList);
+        toDos = new ArrayList<>();
+        addButton = viewInflater.findViewById(R.id.addButton);
 
-        toDos.add("Do Laundry");
-        toDos.add("groceries");
-        toDos.add("walk dog");
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,toDos);
 
@@ -45,10 +54,35 @@ public class ToDo extends Fragment {
             }
         });
 
-        return view;
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Toast.makeText(getActivity(), "Button Selected", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                input = new EditText(getActivity());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
 
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addText = input.getText().toString();
+                        toDos.add(addText);
 
-
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
+                return viewInflater;
+        }
     }
-}
+
+
