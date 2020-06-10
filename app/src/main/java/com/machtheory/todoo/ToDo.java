@@ -1,6 +1,8 @@
 package com.machtheory.todoo;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,18 +34,19 @@ public class ToDo extends Fragment {
     EditText input;
     ArrayList<String> toDos;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View viewInflater = inflater.inflate(R.layout.fragment_to_do, container, false);
 
         toDoList = viewInflater.findViewById(R.id.toDoList);
-        toDos = new ArrayList<>();
+        toDos = PrefConfig.readListFromPref(getActivity());
+
+        if(toDos == null) {
+            toDos = new ArrayList<>();
+        }
         addButton = viewInflater.findViewById(R.id.addButton);
 
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,toDos);
+        final ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,toDos);
 
         toDoList.setAdapter(arrayAdapter);
 
@@ -69,6 +72,8 @@ public class ToDo extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         addText = input.getText().toString();
                         toDos.add(addText);
+                        PrefConfig.listInPref(getContext(), toDos);
+                        arrayAdapter.notifyDataSetChanged();
 
                     }
                 });
