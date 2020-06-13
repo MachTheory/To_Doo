@@ -14,6 +14,8 @@ import java.util.List;
 public class PrefConfig {
 
     private static final String LIST_KEY = "list_key";
+    private static final String PROGRESS_KEY = "progress_key";
+    private static final String DONE_KEY = "done_key";
 
     public static void listInPref(Context context, ArrayList list){
         Gson gson = new Gson();
@@ -28,6 +30,25 @@ public class PrefConfig {
     public static ArrayList readListFromPref (Context context){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         String jsonString = pref.getString(LIST_KEY,"");
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList list = gson.fromJson(jsonString, type);
+        return list;
+    }
+    public static void progressListInPref(Context context, ArrayList list){
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(list);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PROGRESS_KEY, jsonString);
+        editor.apply();
+    }
+
+    public static ArrayList readProgFromPref (Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String jsonString = pref.getString(PROGRESS_KEY,"");
 
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<String>>(){}.getType();

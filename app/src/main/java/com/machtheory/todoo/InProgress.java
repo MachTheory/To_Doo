@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class InProgress extends Fragment {
 
     ListView inProgressList;
+    ArrayList<String> inProgs;
 
     public InProgress() {
         // Required empty public constructor
@@ -33,20 +35,34 @@ public class InProgress extends Fragment {
         View view = inflater.inflate(R.layout.fragment_in_progress, container, false);
 
         inProgressList = view.findViewById(R.id.inProgressList);
-        final ArrayList<String> toDos = new ArrayList<>();
+        inProgs = PrefConfig.readProgFromPref(getActivity());
 
-        toDos.add("Do Laundry");
-        toDos.add("groceries");
-        toDos.add("walk dog");
+        if(inProgs == null) {
+            inProgs = new ArrayList<>();
+        }
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,toDos);
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,inProgs);
 
         inProgressList.setAdapter(arrayAdapter);
 
-        inProgressList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            String s =bundle.getString("Key", "recived");
+            Log.d("Fragment", "Received data!");
+            inProgs.add(s);
+            PrefConfig.progressListInPref(getContext(), inProgs);
+            arrayAdapter.notifyDataSetChanged();
+        }
+
+
+
+
+        inProgressList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), toDos.get(i), Toast.LENGTH_SHORT).show();
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), "Moved to Done 💥", Toast.LENGTH_SHORT).show();
+                return false;
             }
         });
 

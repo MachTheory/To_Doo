@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".InProgress">
 
-    <ListView
-        android:id="@+id/inProgressList"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/frame">
+
+        <ListView
+            android:id="@+id/inProgressList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

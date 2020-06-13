@@ -1,15 +1,10 @@
 package com.machtheory.todoo;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -34,6 +29,7 @@ public class ToDo extends Fragment {
     EditText input;
     ArrayList<String> toDos;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewInflater = inflater.inflate(R.layout.fragment_to_do, container, false);
@@ -50,10 +46,20 @@ public class ToDo extends Fragment {
 
         toDoList.setAdapter(arrayAdapter);
 
-        toDoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), toDos.get(i), Toast.LENGTH_SHORT).show();
+        toDoList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //send data to next fragment
+                Bundle bundle = new Bundle();
+                InProgress fragB = new InProgress();
+                bundle.putString("Key", toDos.get(i));
+                fragB.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.frame, fragB).commit();
+
+                //set alert dialog to ask if user wants to delete item from list
+                Toast.makeText(getActivity(), "Moved to In Progress!", Toast.LENGTH_SHORT).show();
+                toDos.remove(i);
+                arrayAdapter.notifyDataSetChanged();
+                return false;
             }
         });
 
@@ -66,6 +72,7 @@ public class ToDo extends Fragment {
                 input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
+                //add select if urgent option to
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

@@ -2,6 +2,7 @@ package com.machtheory.todoo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     TabItem inProgress;
     TabItem done;
     ViewPager viewPager;
+    ActionBar actionBar;
 
 
 // Options Menu
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.clear_text){
+            //clears the list
             Log.d("menu", "item selected");
         }
         return super.onOptionsItemSelected(item);
@@ -57,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        actionBar = getSupportActionBar();
+        //change this color to something that isn't jarring lol
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#808000")));
 
         tabLayout = findViewById(R.id.tabLayout);
         toDo = findViewById(R.id.toDo);

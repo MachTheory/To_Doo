@@ -6,10 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".Done">
 
-    <ListView
-        android:id="@+id/doneList"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frame">
+
+        <ListView
+            android:id="@+id/doneList"
+            android:layout_width="409dp"
+            android:layout_height="729dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
