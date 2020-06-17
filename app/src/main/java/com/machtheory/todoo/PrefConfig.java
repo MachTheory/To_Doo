@@ -27,7 +27,7 @@ public class PrefConfig {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(LIST_KEY, jsonString);
         editor.apply();
-        //preferences.edit().clear().commit();
+
     }
 
     public static ArrayList readListFromPref (Context context){
@@ -40,31 +40,11 @@ public class PrefConfig {
         return list;
     }
 
-    public static void removeToDoFromPref(Context context, String s){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove(LIST_KEY);
-        editor.apply();
-    }
 
-    public static void removeInProgFromPref(Context context, String s){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove(PROGRESS_KEY);
-        editor.apply();
-    }
-
-    public static void removeDoneFromPref(Context context, String s){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove(DONE_KEY);
-        editor.apply();
-    }
 
     public static void progressListInPref(Context context2, ArrayList list2){
         Gson gson = new Gson();
         String jsonString = gson.toJson(list2);
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context2);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PROGRESS_KEY, jsonString);
@@ -101,14 +81,6 @@ public class PrefConfig {
         return list3;
     }
 
-    public static void registerPref(Context context, SharedPreferences.OnSharedPreferenceChangeListener listener){
-        SharedPreferences preferences = context.getSharedPreferences(LIST_KEY, Context.MODE_PRIVATE);
-        preferences.registerOnSharedPreferenceChangeListener(listener);
-    }
 
-    public static void unregisterPref(Context context, SharedPreferences.OnSharedPreferenceChangeListener listener){
-        SharedPreferences preferences = context.getSharedPreferences(LIST_KEY, Context.MODE_PRIVATE);
-        preferences.unregisterOnSharedPreferenceChangeListener(listener);
-    }
 
 }
