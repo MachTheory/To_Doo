@@ -1,9 +1,11 @@
 package com.machtheory.todoo;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Done extends Fragment {
+public class Done extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     ListView doneList;
+    ArrayList<String> done;
 
     public Done() {
         // Required empty public constructor
@@ -34,23 +37,62 @@ public class Done extends Fragment {
         View view = inflater.inflate(R.layout.fragment_done, container, false);
 
         doneList = view.findViewById(R.id.doneList);
-        final ArrayList<String> toDos = new ArrayList<>();
+        done = PrefConfig.readDoneFromPref(getActivity());
 
-        toDos.add("Do Laundry");
-        toDos.add("groceries");
-        toDos.add("walk dog");
+        if(done == null) {
+            done = new ArrayList<>();
+        }
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,toDos);
+        final ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, done);
 
         doneList.setAdapter(arrayAdapter);
 
-        doneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), toDos.get(i), Toast.LENGTH_SHORT).show();
-            }
-        });
+       Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            String s = bundle.getString("Key2", "received");
+            Log.d("Fragment Done", "Received data!");
+            done.add(s);
+            PrefConfig.doneListInPref(getContext(), done);
+            arrayAdapter.notifyDataSetChanged();
+        }
 
-        return view;
+
+
+        doneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Toast.makeText(getActivity(), done.get(i), Toast.LENGTH_SHORT).show();
+                    done.remove(i);
+                    arrayAdapter.notifyDataSetChanged();
+                    PrefConfig.doneListInPref(getActivity(), done);
+                }
+                });
+
+        if(done.size() == 0){
+            done.clear();
+            arrayAdapter.notifyDataSetChanged();
+        }
+            return view;
+        }
+
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Done", "Paused");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("Done", "Destroyed");
     }
 }
+
+

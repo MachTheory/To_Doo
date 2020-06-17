@@ -1,5 +1,6 @@
 package com.machtheory.todoo;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,10 +20,11 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InProgress extends Fragment {
+public class InProgress extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     ListView inProgressList;
     ArrayList<String> inProgs;
+    ArrayAdapter arrayAdapter;
 
     public InProgress() {
         // Required empty public constructor
@@ -41,32 +43,62 @@ public class InProgress extends Fragment {
             inProgs = new ArrayList<>();
         }
 
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,inProgs);
+        arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,inProgs);
 
         inProgressList.setAdapter(arrayAdapter);
 
         Bundle bundle = this.getArguments();
         if(bundle != null){
-            String s =bundle.getString("Key", "recived");
-            Log.d("Fragment", "Received data!");
+            String s =bundle.getString("Key", "received");
+            Log.d("Fragment Prog", "Received data!");
             inProgs.add(s);
             PrefConfig.progressListInPref(getContext(), inProgs);
             arrayAdapter.notifyDataSetChanged();
         }
 
-
-
-
         inProgressList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "Moved to Done 💥", Toast.LENGTH_SHORT).show();
-                return false;
+                //send data to next fragment
+                Bundle bundle = new Bundle();
+                Done fragC = new Done();
+                bundle.putString("Key2", inProgs.get(i));
+                fragC.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.frame_done, fragC).commit();
+                Toast.makeText(getActivity(), "You Finished! 💥", Toast.LENGTH_SHORT).show();
+
+                inProgs.remove(i);
+                arrayAdapter.notifyDataSetChanged();
+                PrefConfig.progressListInPref(getActivity(),inProgs);
+
+                return true;
             }
         });
 
+        if(inProgs.size() == 0){
+            inProgs.clear();
+            arrayAdapter.notifyDataSetChanged();
+        }
+
         return view;
 
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("In Progress", "Paused");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("In Progress", "Destroyed");
     }
 }

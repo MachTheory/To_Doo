@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 // Options Menu
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -48,14 +48,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.clear_text){
-            //clears the list
-            Log.d("menu", "item selected");
-        }
-        return super.onOptionsItemSelected(item);
-    }
+ */
+
 
 
     @Override
@@ -65,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         //change this color to something that isn't jarring lol
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#808000")));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00BE77")));
 
         tabLayout = findViewById(R.id.tabLayout);
         toDo = findViewById(R.id.toDo);
@@ -78,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(3);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
