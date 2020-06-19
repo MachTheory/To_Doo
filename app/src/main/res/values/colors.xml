@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="white">#ffff</color>
+    <color name="toolbarGreen">#00BE77</color>
+    <color name="header">#00CE84</color>
+    <color name="header_body">#98F5D9</color>
 </resources>

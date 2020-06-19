@@ -56,9 +56,30 @@ public class ToDo extends Fragment  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.clear_text){
-            toDos.clear();
-            arrayAdapter.notifyDataSetChanged();
+
+        switch(id){
+            case R.id.clear_text:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Are you sure you want to clear all items?");
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        toDos.clear();
+                        arrayAdapter.notifyDataSetChanged();
+                        PrefConfig.listInPref(getActivity(), toDos);
+                    }
+                });
+
+                builder.setNegativeButton("No, don't clear items", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                builder.show();
+
+             break;
         }
 
         return super.onOptionsItemSelected(item);

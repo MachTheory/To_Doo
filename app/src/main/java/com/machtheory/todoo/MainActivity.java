@@ -3,8 +3,11 @@ package com.machtheory.todoo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -24,6 +27,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -36,36 +40,31 @@ public class MainActivity extends AppCompatActivity {
     TabItem inProgress;
     TabItem done;
     ViewPager viewPager;
-    ActionBar actionBar;
-
-
-// Options Menu
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menus, menu);
-        return true;
-    }
-
- */
-
-
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+    Toolbar toolbar;
+    NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        actionBar = getSupportActionBar();
-        //change this color to something that isn't jarring lol
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00BE77")));
 
         tabLayout = findViewById(R.id.tabLayout);
         toDo = findViewById(R.id.toDo);
         inProgress = findViewById(R.id.inProgress);
         done = findViewById(R.id.done);
         viewPager = findViewById(R.id.viewPager);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navView = findViewById(R.id.navView);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+
 
         PagerAdapter pagerAdapter = new PagerAdapter(
                 getSupportFragmentManager(),
