@@ -57,7 +57,7 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
         switch(id){
             case R.id.clear_text:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Delete All Items in To Do");
+                builder.setTitle("Delete All Items in Done");
                 builder.setMessage("Are you sure you want to clear all items?");
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
