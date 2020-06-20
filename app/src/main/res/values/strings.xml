@@ -12,4 +12,7 @@
     <string name="close">close</string>
     <string name="yes">Yes</string>
     <string name="no">No, don\'t delete all</string>
+    <string name="about_section"> This application was developed by Mach Theory.
+        Please support by leaving a comment and rating this application.
+        You can also support via Cash App: $sweetdi08. Thank you and enjoy!</string>
 </resources>

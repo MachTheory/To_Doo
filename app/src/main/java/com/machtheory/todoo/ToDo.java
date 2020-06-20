@@ -60,6 +60,7 @@ public class ToDo extends Fragment  {
         switch(id){
             case R.id.clear_text:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Delete All Items in To Do");
                 builder.setMessage("Are you sure you want to clear all items?");
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -135,6 +136,7 @@ public class ToDo extends Fragment  {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setTitle("Add new item");
                 builder.setView(input);
                 //add select if urgent option to
 

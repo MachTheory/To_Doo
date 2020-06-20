@@ -6,5 +6,6 @@
     <color name="white">#ffff</color>
     <color name="toolbarGreen">#00BE77</color>
     <color name="header">#00CE84</color>
-    <color name="header_body">#98F5D9</color>
+    <color name="header_body">#A0F1A3</color>
+    <color name="tabSelected">#BE0046</color>
 </resources>

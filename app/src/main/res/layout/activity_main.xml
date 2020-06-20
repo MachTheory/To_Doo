@@ -31,7 +31,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:tabBackground="@color/toolbarGreen"
+            app:tabSelectedTextColor="@color/white"
+            app:tabIndicatorColor="@color/tabSelected">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/toDo"
