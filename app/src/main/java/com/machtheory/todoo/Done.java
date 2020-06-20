@@ -1,12 +1,18 @@
 package com.machtheory.todoo;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,10 +31,59 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
 
     ListView doneList;
     ArrayList<String> done;
+    ArrayAdapter arrayAdapter;
+
 
     public Done() {
-        // Required empty public constructor
+        setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.menus, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.clear_text:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Delete All Items in To Do");
+                builder.setMessage("Are you sure you want to clear all items?");
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        done.clear();
+                        arrayAdapter.notifyDataSetChanged();
+                        PrefConfig.listInPref(getActivity(), done);
+                    }
+                });
+
+                builder.setNegativeButton("No, don't clear items", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                builder.show();
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
     @Override
@@ -43,7 +98,7 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
             done = new ArrayList<>();
         }
 
-        final ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, done);
+        arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, done);
 
         doneList.setAdapter(arrayAdapter);
 
