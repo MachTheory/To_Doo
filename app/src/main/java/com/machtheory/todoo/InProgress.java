@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InProgress extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class InProgress extends Fragment {
 
     ListView inProgressList;
     ArrayList<String> inProgs;
@@ -137,10 +137,6 @@ public class InProgress extends Fragment implements SharedPreferences.OnSharedPr
 
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-
-    }
 
 
     @Override

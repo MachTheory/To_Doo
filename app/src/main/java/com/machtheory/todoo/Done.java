@@ -62,6 +62,7 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        PrefConfig.archiveListInPref(getActivity(), done);
                         done.clear();
                         arrayAdapter.notifyDataSetChanged();
                         PrefConfig.listInPref(getActivity(), done);
@@ -117,6 +118,7 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Toast.makeText(getActivity(), done.get(i), Toast.LENGTH_SHORT).show();
+                    PrefConfig.archiveListInPref(getActivity(), done);
                     done.remove(i);
                     arrayAdapter.notifyDataSetChanged();
                     PrefConfig.doneListInPref(getActivity(), done);

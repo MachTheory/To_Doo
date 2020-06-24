@@ -79,6 +79,26 @@ public class PrefConfig {
         return list3;
     }
 
+    public static void archiveListInPref(Context context, ArrayList list){
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(list);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(DONE_KEY, jsonString);
+        editor.apply();
+    }
+
+    public static ArrayList archiveDoneFromPref (Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String jsonString = pref.getString(DONE_KEY,"");
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList list = gson.fromJson(jsonString, type);
+        return list;
+    }
+
 
 
 }
