@@ -33,18 +33,20 @@ public class InProgress extends Fragment {
     ArrayAdapter arrayAdapter;
 
     public InProgress() {
-        //setHasOptionsMenu(true);
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.menus, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
+        //menu.clear();
+        menuInflater.inflate(R.menu.menus, menu);
+
     }
 
 

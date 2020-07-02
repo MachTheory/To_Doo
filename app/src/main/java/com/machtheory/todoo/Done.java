@@ -35,25 +35,23 @@ public class Done extends Fragment {
     ListView doneList;
     ArrayList<String> done;
     ArrayAdapter arrayAdapter;
-    PassDataInterface passDataInterface;
     ArrayList<String> archive;
 
-
     public Done() {
-        //setHasOptionsMenu(true);
 
     }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
+
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.menus, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
+        menuInflater.inflate(R.menu.menus, menu);
     }
 
 
@@ -65,11 +63,10 @@ public class Done extends Fragment {
             case R.id.clear_text:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Delete All Items in Done");
-                builder.setMessage("Are you sure you want to clear all items?");
+                builder.setMessage("*Note, items will not be archived.");
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        PrefConfig.archiveListInPref(getActivity(), done);
                         done.clear();
                         arrayAdapter.notifyDataSetChanged();
                         PrefConfig.listInPref(getActivity(), done);
