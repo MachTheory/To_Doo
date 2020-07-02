@@ -9,7 +9,7 @@
     </style>
 
     <style name="Nav" parent="Theme.AppCompat.Light.DarkActionBar">
-
+        <item name="headerLayout"> @color/header</item>
     </style>
 
 <style name="SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">

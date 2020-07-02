@@ -16,6 +16,7 @@ public class PrefConfig {
     public static final String LIST_KEY = "list_key";
     public static final String PROGRESS_KEY = "progress_key";
     public static final String DONE_KEY = "done_key";
+    public static final String ARCHIVE_KEY = "archive_key";
 
     public static void listInPref(Context context, ArrayList list){
         Gson gson = new Gson();
@@ -85,13 +86,13 @@ public class PrefConfig {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(DONE_KEY, jsonString);
+        editor.putString(ARCHIVE_KEY, jsonString);
         editor.apply();
     }
 
-    public static ArrayList archiveDoneFromPref (Context context){
+    public static ArrayList readArchiveFromPref (Context context){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        String jsonString = pref.getString(DONE_KEY,"");
+        String jsonString = pref.getString(ARCHIVE_KEY,"");
 
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<String>>(){}.getType();

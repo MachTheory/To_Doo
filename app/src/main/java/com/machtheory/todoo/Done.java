@@ -1,6 +1,7 @@
 package com.machtheory.todoo;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -20,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.machtheory.todoo.interfaces.PassDataInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +30,24 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Done extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class Done extends Fragment {
 
     ListView doneList;
     ArrayList<String> done;
     ArrayAdapter arrayAdapter;
+    PassDataInterface passDataInterface;
+    ArrayList<String> archive;
 
 
     public Done() {
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
+
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -94,9 +101,13 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
 
         doneList = view.findViewById(R.id.doneList);
         done = PrefConfig.readDoneFromPref(getActivity());
+        archive = PrefConfig.readArchiveFromPref(getActivity());
 
         if(done == null) {
             done = new ArrayList<>();
+        }
+        if(archive == null){
+            archive = new ArrayList<>();
         }
 
         arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, done);
@@ -117,11 +128,18 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
         doneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(getActivity(), done.get(i), Toast.LENGTH_SHORT).show();
-                    PrefConfig.archiveListInPref(getActivity(), done);
+
+                    archive.add(done.get(i));
+                    PrefConfig.archiveListInPref(getActivity(), archive);
+                    Toast.makeText(getActivity(), "Sent to Archive", Toast.LENGTH_SHORT).show();
+
                     done.remove(i);
                     arrayAdapter.notifyDataSetChanged();
                     PrefConfig.doneListInPref(getActivity(), done);
+                    if(done.size() == 0){
+                        done.clear();
+                        arrayAdapter.notifyDataSetChanged();
+                    }
                 }
                 });
 
@@ -133,11 +151,6 @@ public class Done extends Fragment implements SharedPreferences.OnSharedPreferen
         }
 
 
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-
-    }
 
     @Override
     public void onPause() {
