@@ -4,10 +4,12 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,21 +38,30 @@ public class ToDo extends Fragment  {
     EditText input;
     ArrayList<String> toDos;
     ArrayAdapter arrayAdapter;
+    TextView entryText;
 
     public ToDo() {
+
+        setRetainInstance(true);
         setHasOptionsMenu(true);
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        //setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+
     }
 
 
+   // @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
+        menu.clear();
         menuInflater.inflate(R.menu.menus, menu);
+        Log.d("set has options created", "true");
+
+
 
     }
 
@@ -57,13 +69,15 @@ public class ToDo extends Fragment  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Log.d("set has options selected", "true");
+
 
         switch(id){
             case R.id.clear_text:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Delete All Items in To Do");
                 builder.setMessage("Are you sure you want to clear all items?");
-                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(Html.fromHtml("<font color='#BE0046'>Yes</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         toDos.clear();
@@ -72,7 +86,7 @@ public class ToDo extends Fragment  {
                     }
                 });
 
-                builder.setNegativeButton("No, don't clear items", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(Html.fromHtml("<font color='#BE0046'>No, don't clear items</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
@@ -84,19 +98,17 @@ public class ToDo extends Fragment  {
              break;
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
         }
 
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         View viewInflater = inflater.inflate(R.layout.fragment_to_do, container, false);
 
 
-
         toDoList = viewInflater.findViewById(R.id.toDoList);
-
         toDos = PrefConfig.readListFromPref(getActivity());
         addButton = viewInflater.findViewById(R.id.addButton);
 
@@ -117,6 +129,7 @@ public class ToDo extends Fragment  {
                 getFragmentManager().beginTransaction().replace(R.id.frame_progress, fragB)
                         .commit();
 
+
                 //set alert dialog to ask if user wants to delete item from list
                 Toast.makeText(getActivity(), "Moved to In Progress!", Toast.LENGTH_SHORT).show();
                 toDos.remove(i);
@@ -133,7 +146,6 @@ public class ToDo extends Fragment  {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getActivity(), "Button Selected", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -141,7 +153,7 @@ public class ToDo extends Fragment  {
                 builder.setView(input);
                 //add select if urgent option to
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(Html.fromHtml("<font color='#BE0046'>OK</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addText = input.getText().toString();
@@ -151,7 +163,7 @@ public class ToDo extends Fragment  {
 
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(Html.fromHtml("<font color='#BE0046'>Cancel</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -160,6 +172,7 @@ public class ToDo extends Fragment  {
                 builder.show();
             }
         });
+
                 return viewInflater;
         }
 

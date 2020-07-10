@@ -21,7 +21,6 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:title="@string/app_name"
             android:elevation="4dp"
-            app:menu="@menu/menus"
             app:layout_constraintTop_toTopOf="parent" />
 
 

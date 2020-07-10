@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.machtheory.todoo.interfaces.PassDataInterface;
 
@@ -38,19 +41,21 @@ public class Done extends Fragment {
     ArrayList<String> archive;
 
     public Done() {
-
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+
     }
 
-
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
+        menu.clear();
         menuInflater.inflate(R.menu.menus, menu);
     }
 
@@ -64,7 +69,7 @@ public class Done extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Delete All Items in Done");
                 builder.setMessage("*Note, items will not be archived.");
-                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(Html.fromHtml("<font color='#BE0046'>Yes</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         done.clear();
@@ -73,7 +78,7 @@ public class Done extends Fragment {
                     }
                 });
 
-                builder.setNegativeButton("No, don't clear items", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(Html.fromHtml("<font color='#BE0046'>No, don't clear items</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
@@ -84,12 +89,8 @@ public class Done extends Fragment {
 
                 break;
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,12 +153,14 @@ public class Done extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        setHasOptionsMenu(false);
         Log.d("Done", "Paused");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        setHasOptionsMenu(false);
         Log.d("Done", "Destroyed");
     }
 }

@@ -12,6 +12,10 @@
         <item name="headerLayout"> @color/header</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/tabSelected</item>
+    </style>
+
 <style name="SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="android:windowBackground">@drawable/background_splash</item>
 </style>

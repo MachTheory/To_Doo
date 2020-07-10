@@ -4,10 +4,12 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,19 +36,22 @@ public class InProgress extends Fragment {
 
     public InProgress() {
 
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+
     }
 
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
-        //menu.clear();
+        menu.clear();
         menuInflater.inflate(R.menu.menus, menu);
-
     }
 
 
@@ -59,7 +64,7 @@ public class InProgress extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Delete All Items in In Progress");
                 builder.setMessage("Are you sure you want to clear all items?");
-                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(Html.fromHtml("<font color='#BE0046'>Yes</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         inProgs.clear();
@@ -68,7 +73,7 @@ public class InProgress extends Fragment {
                     }
                 });
 
-                builder.setNegativeButton("No, don't clear items", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(Html.fromHtml("<font color='#BE0046'>No, don't clear items</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
@@ -80,7 +85,7 @@ public class InProgress extends Fragment {
                 break;
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
 
@@ -88,8 +93,9 @@ public class InProgress extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_in_progress, container, false);
+
 
         inProgressList = view.findViewById(R.id.inProgressList);
         inProgs = PrefConfig.readProgFromPref(getActivity());
@@ -119,8 +125,9 @@ public class InProgress extends Fragment {
                 Done fragC = new Done();
                 bundle.putString("Key2", inProgs.get(i));
                 fragC.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.frame_done, fragC).commit();
-                Toast.makeText(getActivity(), "You Finished! 💥", Toast.LENGTH_SHORT).show();
+                    getFragmentManager().beginTransaction().replace(R.id.frame_done, fragC).commit();
+                    Toast.makeText(getActivity(), "Moved to Done, You Finished! 💥", Toast.LENGTH_SHORT).show();
+
 
                 inProgs.remove(i);
                 arrayAdapter.notifyDataSetChanged();
@@ -147,12 +154,14 @@ public class InProgress extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        setHasOptionsMenu(false);
         Log.d("In Progress", "Paused");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        setHasOptionsMenu(false);
         Log.d("In Progress", "Destroyed");
     }
 }

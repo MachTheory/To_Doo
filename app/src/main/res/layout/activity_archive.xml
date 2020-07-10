@@ -6,12 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".Archive">
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="409dp"
-        android:layout_height="657dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/archiveToolBar"
+        app:title="@string/archive"
+        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/header"
+        android:elevation="1dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/AppTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        app:layout_constraintStart_toStartOf="@id/archiveToolBar"
+        app:layout_constraintTop_toTopOf="@id/archiveToolBar">
+
+    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>
